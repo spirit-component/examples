@@ -98,3 +98,7 @@ curl -X POST \
 }
 ```
 
+
+## work flow
+
+![](https://raw.githubusercontent.com/spirit-component/draft-assets/master/images/examples/todo/flow.png)
