@@ -46,7 +46,7 @@ func (p *Todo) Stop() error {
 func (p *Todo) NewTask(session mail.Session) (err error) {
 
 	task := Task{}
-	err = session.PayloadContent().ToObject(&task)
+	err = session.Payload().Content().ToObject(&task)
 	if err != nil {
 		return
 	}
@@ -55,7 +55,7 @@ func (p *Todo) NewTask(session mail.Session) (err error) {
 
 	task.Id = id
 
-	err = session.PayloadContent().SetBody(&TaskId{Id: id})
+	err = session.Payload().Content().SetBody(&TaskId{Id: id})
 	if err != nil {
 		return
 	}
@@ -68,7 +68,7 @@ func (p *Todo) NewTask(session mail.Session) (err error) {
 func (p *Todo) GetTask(session mail.Session) (err error) {
 
 	taskId := TaskId{}
-	err = session.PayloadContent().ToObject(&taskId)
+	err = session.Payload().Content().ToObject(&taskId)
 	if err != nil {
 		return
 	}
@@ -79,7 +79,7 @@ func (p *Todo) GetTask(session mail.Session) (err error) {
 		return
 	}
 
-	err = session.PayloadContent().SetBody(task)
+	err = session.Payload().Content().SetBody(task)
 	if err != nil {
 		return
 	}
