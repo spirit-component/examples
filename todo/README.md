@@ -2,33 +2,23 @@
 
 ## build todo
 
-#### create imports file
+> Install spirit-builder command before you build todo
 
-imports_todo.go
-
-```go
-package main
-
-import (
-	_ "github.com/go-spirit/spirit/component/mns"
-	_ "github.com/spirit-component/examples/todo"
-)
-```
-
-#### copy imports file to go-spirit dir
+#### Install spirit-builder command
 
 ```bash
-> cp imports_todo.go $GOPATH/src/github.com/go-spirit/go-spirit 
+go get github.com/go-spirit/spirit
+go get github.com/go-spirit/spirit-builder
+go install github.com/go-spirit/spirit-builder
 ```
 
-#### build
+#### Build
 
 ```bash
-> cd $GOPATH/src/github.com/go-spirit/go-spirit
-> go build -o todo ./main.go ./imports_todo.go
+> spirit-builder build --config configs/build-todo.conf
 ```
 
-#### make sure the components are already registered
+#### Make sure the components are already registered
 
 ```bash
 > ./todo list components
@@ -38,7 +28,7 @@ import (
 ```
 
 
-#### run components
+#### Run components
 
 ```
 > cd $GOPATH/src/github.com/spirit-component/examples/todo
@@ -46,10 +36,11 @@ import (
 > ./todo run --config configs/todo.conf
 ```
 
-### work with post api
+### Work with post api
 
 ```
-./postapi run --config configs/postapi.conf
+> spirit-builder build --config configs/build-postapi.conf
+> ./postapi run --config configs/build-postapi.conf
 ```
 
 #### todo.task.new
@@ -107,32 +98,14 @@ curl -X POST \
 
 ## combine the postapi and todo
 
-imports_all.go
 
-```go
-package main
-
-import (
-  _ "github.com/go-spirit/spirit/component/mns"
-  _ "github.com/spirit-component/examples/todo"
-  _ "github.com/spirit-component/postapi"
-)
-```
-
-#### copy imports file to go-spirit dir
+#### Build
 
 ```bash
-> cp imports_todo.go $GOPATH/src/github.com/go-spirit/go-spirit 
+> spirit-builder build --config configs/build-standalone.conf
 ```
 
-#### build
-
-```bash
-> cd $GOPATH/src/github.com/go-spirit/go-spirit
-> go build -o todo ./main.go ./imports_all.go
-```
-
-#### make sure the components are already registered
+#### Make sure the components are already registered
 
 ```bash
 > ./todo list components
@@ -143,7 +116,7 @@ import (
 ```
 
 
-#### run components
+#### Run components
 
 ```
 > cd $GOPATH/src/github.com/spirit-component/examples/todo
