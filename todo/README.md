@@ -7,7 +7,6 @@
 #### Install spirit-builder command
 
 ```bash
-go get github.com/go-spirit/spirit
 go get github.com/go-spirit/spirit-builder
 go install github.com/go-spirit/spirit-builder
 ```
