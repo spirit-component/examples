@@ -20,15 +20,18 @@ type TaskId struct {
 
 type Todo struct {
 	tasks map[string]Task
+
+	alias string
 }
 
 func init() {
 	component.RegisterComponent("examples-todo", NewTodo)
 }
 
-func NewTodo(opts ...component.Option) (comp component.Component, err error) {
+func NewTodo(alias string, opts ...component.Option) (comp component.Component, err error) {
 
 	return &Todo{
+		alias: alias,
 		tasks: make(map[string]Task),
 	}, nil
 }
@@ -41,6 +44,13 @@ func (p *Todo) Start() error {
 func (p *Todo) Stop() error {
 
 	return nil
+}
+
+func (p *Todo) Alias() string {
+	if p == nil {
+		return ""
+	}
+	return p.alias
 }
 
 func (p *Todo) NewTask(session mail.Session) (err error) {
