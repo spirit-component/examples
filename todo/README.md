@@ -2,19 +2,19 @@
 
 ## build todo
 
-> Install spirit-builder command before you build todo
+> Install go-spirit command before you build todo
 
-#### Install spirit-builder command
+#### Install go-spirit command
 
 ```bash
-go get github.com/go-spirit/spirit-builder
-go install github.com/go-spirit/spirit-builder
+go get github.com/go-spirit/go-spirit
+go install github.com/go-spirit/go-spirit
 ```
 
 #### Build
 
 ```bash
-> spirit-builder build --config configs/build-todo.conf
+> go-spirit build --config configs/build-todo.conf
 ```
 
 #### Make sure the components are already registered
@@ -38,7 +38,7 @@ go install github.com/go-spirit/spirit-builder
 ### Work with post api
 
 ```
-> spirit-builder build --config configs/build-postapi.conf
+> go-spirit build --config configs/build-postapi.conf
 > ./postapi run --config configs/build-postapi.conf
 ```
 
@@ -101,7 +101,7 @@ curl -X POST \
 #### Build
 
 ```bash
-> spirit-builder build --config configs/build-standalone.conf
+> go-spirit build --config configs/build-standalone.conf
 ```
 
 #### Make sure the components are already registered
