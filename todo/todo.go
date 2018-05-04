@@ -2,6 +2,7 @@ package todo
 
 import (
 	"errors"
+	"fmt"
 
 	"github.com/go-spirit/spirit/component"
 	"github.com/go-spirit/spirit/mail"
@@ -19,6 +20,7 @@ type TaskId struct {
 }
 
 type Todo struct {
+	opts  component.Options
 	tasks map[string]Task
 
 	alias string
@@ -30,8 +32,15 @@ func init() {
 
 func NewTodo(alias string, opts ...component.Option) (comp component.Component, err error) {
 
+	todoOpts := component.Options{}
+
+	for _, o := range opts {
+		o(&todoOpts)
+	}
+
 	return &Todo{
 		alias: alias,
+		opts:  todoOpts,
 		tasks: make(map[string]Task),
 	}, nil
 }
@@ -51,6 +60,22 @@ func (p *Todo) Alias() string {
 		return ""
 	}
 	return p.alias
+}
+
+func (p *Todo) ValidateTaskName(session mail.Session) (err error) {
+
+	task := Task{}
+	err = session.Payload().Content().ToObject(&task)
+	if err != nil {
+		return
+	}
+
+	if len(task.Name) == 0 {
+		err = fmt.Errorf("task name is empty")
+		return
+	}
+
+	return
 }
 
 func (p *Todo) NewTask(session mail.Session) (err error) {
@@ -100,6 +125,10 @@ func (p *Todo) GetTask(session mail.Session) (err error) {
 func (p *Todo) Route(session mail.Session) worker.HandlerFunc {
 
 	switch session.Query("action") {
+	case "validate_name":
+		{
+			return p.ValidateTaskName
+		}
 	case "new":
 		{
 			return p.NewTask
