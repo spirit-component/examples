@@ -3,6 +3,7 @@ package todo
 import (
 	"errors"
 	"fmt"
+	"sync"
 
 	"github.com/go-spirit/spirit/component"
 	"github.com/go-spirit/spirit/mail"
@@ -24,6 +25,8 @@ type Todo struct {
 	tasks map[string]Task
 
 	alias string
+
+	locker sync.RWMutex
 }
 
 func init() {
@@ -82,6 +85,7 @@ func (p *Todo) NewTask(session mail.Session) (err error) {
 
 	task := Task{}
 	err = session.Payload().Content().ToObject(&task)
+
 	if err != nil {
 		return
 	}
@@ -95,7 +99,9 @@ func (p *Todo) NewTask(session mail.Session) (err error) {
 		return
 	}
 
+	p.locker.Lock()
 	p.tasks[task.Id] = task
+	p.locker.Unlock()
 
 	return
 }
@@ -108,6 +114,8 @@ func (p *Todo) GetTask(session mail.Session) (err error) {
 		return
 	}
 
+	p.locker.RLock()
+	defer p.locker.RUnlock()
 	task, exist := p.tasks[taskId.Id]
 	if !exist {
 		err = errors.New("task not exist")
